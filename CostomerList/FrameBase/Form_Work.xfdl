@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_Work" width="800" height="600" titletext="Costome_List_Search">
+    <Layouts>
+      <Layout width="800" height="600" screenid="Desktop_screen">
+        <Static id="sttList" taborder="0" text="Costomer List Search" left="37" top="16" width="573" height="97" font="bold 20px/normal &quot;Verdana&quot;"/>
+        <Div id="divCommand" taborder="1" text="Div00" left="40" top="108" width="634" height="84">
+          <Layouts>
+            <Layout>
+              <Edit id="edtSearch" taborder="0" left="32" top="9" width="328" height="63"/>
+              <Button id="btnSearch" taborder="1" text="Search" left="450" top="14" width="138" height="52" onclick="divCommand_btnSearch_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grdCostomers" taborder="2" left="68" top="190" width="619" height="285" binddataset="dsCostomers">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="138"/>
+                <Column size="159"/>
+                <Column size="137"/>
+                <Column size="161"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell rowspan="2" text="ID"/>
+                <Cell col="1" rowspan="2" text="Name"/>
+                <Cell col="2" text="Email"/>
+                <Cell col="3" text="Company"/>
+                <Cell row="1" col="2" text="Phone"/>
+                <Cell row="1" col="3" text="Department"/>
+              </Band>
+              <Band id="body">
+                <Cell rowspan="2" text="bind:id"/>
+                <Cell col="1" rowspan="2" text="bind:name"/>
+                <Cell col="2" text="bind:email"/>
+                <Cell col="3" text="bind:comp_name"/>
+                <Cell row="1" col="2" text="bind:phone"/>
+                <Cell row="1" col="3" text="bind:department" displaytype="combotext" combodataset="dsDepartment" combocodecol="code" combodatacol="value"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsCustomers">
+        <ColumnInfo>
+          <Column id="id" type="STRING" size="4"/>
+          <Column id="name" type="STRING" size="16"/>
+          <Column id="email" type="STRING" size="32"/>
+          <Column id="phone" type="STRING" size="16"/>
+          <Column id="comp_name" type="STRING" size="32"/>
+          <Column id="department" type="STRING" size="32"/>
+          <Column id="comp_phone" type="STRING" size="16"/>
+          <Column id="comp_addr" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsDepartment">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="32"/>
+          <Column id="value" type="STRING" size="32"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">0</Col>
+            <Col id="value">Boardroom</Col>
+          </Row>
+          <Row>
+            <Col id="code">1</Col>
+            <Col id="value">Accounting</Col>
+          </Row>
+          <Row>
+            <Col id="code">2</Col>
+            <Col id="value">Personal</Col>
+          </Row>
+          <Row>
+            <Col id="code">3</Col>
+            <Col id="value">Human Resource</Col>
+          </Row>
+          <Row>
+            <Col id="code">4</Col>
+            <Col id="value">Sales</Col>
+          </Row>
+          <Row>
+            <Col id="code">5</Col>
+            <Col id="value">Marketing</Col>
+          </Row>
+          <Row>
+            <Col id="code">6</Col>
+            <Col id="value">Enginnering</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[
+this.divCommand_btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var id = "search";
+	var url = "http://localhost:8080/CostomerList/sample.xml";
+	var reqDs = "";
+	var respDs = "dsCustomers=customers";
+	var args = "";
+	var callback = "received";
+	
+	this.transaction(id, url, reqDs, respDs, args, callback);
+};
+
+this.received = function (id, code, msg)
+{
+	if(code == 0)
+	{
+		this.alert(this.dsCustomers.rowcount + "개 데이터 찾음");
+		trace(this.dsCustomers.rowcount + "개 데이터 찾음");
+	}
+	else 
+	{
+		this.alert("Error: " + code + ", " + msg);
+		trace("Error: " + code + ", " + msg);
+	}
+};]]></Script>
+  </Form>
+</FDL>
